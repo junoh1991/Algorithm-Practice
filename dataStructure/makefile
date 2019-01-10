@@ -2,6 +2,8 @@ SRCS = $(wildcard *.cc)
 
 PROGS = $(patsubst %.cc,%,$(SRCS))
 
+CFLAGS = -g
+
 CC = g++
 
 all: $(PROGS)
