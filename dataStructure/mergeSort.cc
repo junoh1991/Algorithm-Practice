@@ -14,6 +14,38 @@ void push(Node *&head, int data) {
 	head = newNode; // ditto
 }
 
+void appendNode(Node *&head, int data){
+	Node* current = head;
+	Node* newNode = new Node();
+	newNode->data = data;
+	
+	if (current == NULL)
+		head = newNode;
+	else{
+		while (current->next != NULL)
+			current = current->next;
+	}
+
+	current->next = newNode;
+}
+
+void appendList(Node *&a, Node *&b){
+	if (b == NULL)
+		return;
+	
+	if (a == NULL){
+		a = b;
+		b = NULL;
+	}
+	else{
+		Node *aPtr = a;
+		while (aPtr-> next != NULL)
+			aPtr = aPtr->next;
+		aPtr->next = b;
+		b = NULL;
+	}
+}
+
 void printLL(Node *head){
 	while (head != NULL){
 		printf("%d ", head->data);
@@ -40,62 +72,57 @@ void split(Node *source, Node *&frontRef, Node *&backRef){
 	temp->next = NULL;
 }
 
-Node *mergeHelper(Node *a, Node *b, Node *listProgress){
+Node *mergeRecursive(Node *a, Node *b){
+	Node *returnList;
+
 	if (a == NULL && b == NULL)
-		return listProgress;
+		return NULL;
+	if (a != NULL && b == NULL)
+		return a;
+	if (a == NULL && b != NULL)
+		return b;
 	
-	if (a != NULL && b == NULL){
-		push(listProgress, a->data);	
-		a = a->next;
-		mergeHelper(a, b, listProgress);
+	if (a->data > b->data){
+		returnList = b;
+		returnList->next = mergeRecursive(a, b->next);
 	}
-	else if (a == NULL && b != NULL){
-		push(listProgress, b->data);
-		b = b->next;
-		mergeHelper(a, b, listProgress);
+	else if (a->data < b->data){
+		returnList = a;
+		returnList->next = mergeRecursive(a->next, b);
 	}
-	else{ // list a and list b are both not empty
-		if (a->data < b->data){
-			push(listProgress, a->data);
-			a = a->next;
-		}
-		else if (a->data > b->data){
-			push(listProgress, b->data);
-			b = b->next;
-		}
-		else{ // data at a and b are same
-			push(listProgress, a->data);
-			push(listProgress, b->data);
-			a = a->next;
-			b = b->next;
-			mergeHelper(a, b, listProgress);
-		}
+	else{
+		returnList = a;
+		returnList->next = mergeRecursive(a->next, b->next);
 	}
+		
+	return returnList;
 }
 
-Node *merge(Node *a, Node *b){
-	Node *returnList = new Node();	
-	returnList = mergeHelper(a, b, returnList);
-}
+void mergeSort(Node *&headRef){
+	Node *lowList, *highList; 
+	split(headRef, lowList, highList);	
+	if (lowList->next != NULL)
+		mergeSort(lowList);
+	if (highList->next !=  NULL)
+		mergeSort(highList);
 
+	headRef = mergeRecursive(lowList, highList);
+}
 
 //Test program;
 int main(){
 	Node *a = new Node();
-	Node *b = new Node();
-	Node *mergedList;
-	
-	a->data = 1;
-	push(a, 3);
-	push(a, 5);
-	push(a, 7);
+	Node *split1, *split2;	
+	a->data = 10;
+	appendNode(a, 3);
+	appendNode(a, 5);
+	appendNode(a, 7);
+	appendNode(a, 15);
+	appendNode(a, 0);
+	appendNode(a, 13);
 
-	b->data = 2;
-	push(b, 4);
-	push(b, 6);
-
-	mergedList = merge(a, b);
-	printLL(mergedList);
+	mergeSort(a);
+	printLL(a);
 }
 
 
