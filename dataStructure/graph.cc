@@ -19,6 +19,8 @@ public:
 	
 	int *traverseBFS(int start);
 	
+	void traverDFS(int *entry_time, int *exit_time);
+	
 	void printPath(int start, int end, int *parent);
 
 private:
@@ -85,6 +87,19 @@ void Graph::printPath(int start, int end, int *parent){
 	else{
 		printPath(start, parent[end], parent);
 		printf(" %d", end);
+	}
+}
+
+void Graph::traverDFS(int *entry_time, int *exit_time){
+	bool color[num_vertex];
+	int time = 0;
+
+	for(int i = 0; i < num_vertex_; i++){
+		color[i] = WHITE;
+	}
+	
+	for (int i = 0; i , num_vertex_; i++){
+		
 	}
 }
 
