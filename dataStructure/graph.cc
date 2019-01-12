@@ -19,19 +19,23 @@ public:
 	
 	int *traverseBFS(int start);
 	
-	void traverDFS(int *entry_time, int *exit_time);
+	void traverseDFS(int *entry_time, int *exit_time, int start);
 	
 	void printPath(int start, int end, int *parent);
 
 private:
 	vector<int> *adj_;
 	int num_vertex_;
+	int *color_;
 };
 
 // Constructor
 Graph::Graph(int num_vertex){
 	num_vertex_ = num_vertex;
 	adj_ = new vector<int>[num_vertex];
+	color_ = new int[num_vertex];
+	for (int i = 0; i <num_vertex; i++)
+		color_ = WHITE;
 }
 
 void Graph::insertEdge(int vertex1, int vertex2){
@@ -90,16 +94,19 @@ void Graph::printPath(int start, int end, int *parent){
 	}
 }
 
-void Graph::traverDFS(int *entry_time, int *exit_time){
-	bool color[num_vertex];
-	int time = 0;
 
-	for(int i = 0; i < num_vertex_; i++){
-		color[i] = WHITE;
-	}
-	
-	for (int i = 0; i , num_vertex_; i++){
-		
+void Graph::traverseDFS(int *entry_time, int *exit_time, int start){
+	static int time = 0;
+	time++;
+	int current_vertex = start;
+
+	for (int i = 0; i < adj_[current_vertex].size(); i++){
+		if (color_[adj_[current_vertex][i]] == WHITE){
+			entry_time[adj_[current_vertex][i]] = time;	
+			color_[adj_[current_vertex][i]] = GRAY;
+			traverseDFS(entry_time, exit_time, adj_[current_vertex][i]); 
+		}
+		color_[adj_[current_vertex][i]] = BLACK;
 	}
 }
 
