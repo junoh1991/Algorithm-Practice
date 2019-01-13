@@ -11,7 +11,7 @@ using std::queue;
 
 class Graph{
 public:
-	Graph(int num_vertex_);
+	Graph(int num_vertex);
 	
 	void insertEdge(int vertex1, int vertex2);
 
@@ -35,7 +35,7 @@ Graph::Graph(int num_vertex){
 	adj_ = new vector<int>[num_vertex];
 	color_ = new int[num_vertex];
 	for (int i = 0; i <num_vertex; i++)
-		color_ = WHITE;
+		color_[i] = WHITE;
 }
 
 void Graph::insertEdge(int vertex1, int vertex2){
@@ -49,7 +49,7 @@ void Graph::insertEdge(int vertex1, int vertex2){
 } 
 
 void Graph::printGraph(){
-	for (int i = 0; i < num_vertex_; i++){
+	for (int i = 1; i < num_vertex_; i++){
 		printf("%d: ", i);
 		for (int j = 0; j < adj_[i].size(); j++){
 			printf(" %d", adj_[i][j]);
@@ -97,17 +97,20 @@ void Graph::printPath(int start, int end, int *parent){
 
 void Graph::traverseDFS(int *entry_time, int *exit_time, int start){
 	static int time = 0;
+
 	time++;
 	int current_vertex = start;
+	color_[start] = GRAY;
+	entry_time[start] = time;
 
 	for (int i = 0; i < adj_[current_vertex].size(); i++){
 		if (color_[adj_[current_vertex][i]] == WHITE){
-			entry_time[adj_[current_vertex][i]] = time;	
-			color_[adj_[current_vertex][i]] = GRAY;
 			traverseDFS(entry_time, exit_time, adj_[current_vertex][i]); 
 		}
-		color_[adj_[current_vertex][i]] = BLACK;
 	}
+	color_[start] = BLACK;
+	time++;
+	exit_time[start] = time;
 }
 
 
@@ -123,5 +126,20 @@ int main(){
 	example.insertEdge(2,3);
 	example.insertEdge(3,4);
 	example.insertEdge(4,5);
-	
+
+	example.printGraph();
+	int entry_time[7];
+	int exit_time[7];
+	example.traverseDFS(entry_time, exit_time, 1);	
+	for (int i = 1; i < 7; i++){
+		printf("Vertex %d entry: %d exit: %d\n", i, entry_time[i], exit_time[i]);
+	}
 }
+
+
+
+
+
+
+
+
