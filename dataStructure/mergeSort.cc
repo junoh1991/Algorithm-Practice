@@ -120,6 +120,11 @@ int main(){
 	appendNode(a, 15);
 	appendNode(a, 0);
 	appendNode(a, 13);
+	appendNode(a, 2);
+	appendNode(a, 34);
+	appendNode(a, 29);
+
+	printLL(a);
 
 	mergeSort(a);
 	printLL(a);
