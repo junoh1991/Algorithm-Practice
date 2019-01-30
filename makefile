@@ -1,12 +1,17 @@
-SRCS = $(wildcard *.cc)
+SRCS = $(wildcard *.c *.cc)
 
-PROGS = $(patsubst %.cc,%,$(SRCS))
+PROGS = $(patsubst %.c%.cc,%,$(SRCS))
 
-CC = g++
+CXX = g++
+
+CC = gcc
 
 all: $(PROGS)
 
 %: %.cc
+	$(CXX) $(CFLAGS)  -o $@ $<
+
+%: %.c
 	$(CC) $(CFLAGS)  -o $@ $<
 
 clean:
