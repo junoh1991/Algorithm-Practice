@@ -98,6 +98,7 @@ Node *mergeRecursive(Node *a, Node *b){
 	return returnList;
 }
 
+// Mergesort for linked list.
 void mergeSort(Node *&headRef){
 	Node *lowList, *highList; 
 	split(headRef, lowList, highList);	
@@ -109,25 +110,11 @@ void mergeSort(Node *&headRef){
 	headRef = mergeRecursive(lowList, highList);
 }
 
+
 //Test program;
 int main(){
-	Node *a = new Node();
-	Node *split1, *split2;	
-	a->data = 10;
-	appendNode(a, 3);
-	appendNode(a, 5);
-	appendNode(a, 7);
-	appendNode(a, 15);
-	appendNode(a, 0);
-	appendNode(a, 13);
-	appendNode(a, 2);
-	appendNode(a, 34);
-	appendNode(a, 29);
 
-	printLL(a);
 
-	mergeSort(a);
-	printLL(a);
 }
 
 
