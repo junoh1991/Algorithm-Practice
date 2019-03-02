@@ -1,16 +1,11 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <stdint.h>
-
-
 
 
 uint32_t getUint1(double input){
     uint32_t* p;
 
     p = (uint32_t*) &input;
-
     return *p;
 }
 
@@ -32,7 +27,6 @@ double getDouble(uint32_t r1, uint32_t r2){
     p--;
 
     val = (double*) p;
-
     return *val;
 }
 
@@ -45,8 +39,7 @@ int main(){
     uint32_t r2 = getUint2(input);
 
     double ans = getDouble(r1, r2);
+    printf("%.2f\n", ans);
 
-    printf("%f\n", ans);
-
-
+    
 }
