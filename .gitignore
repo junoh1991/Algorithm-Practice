@@ -1,4 +1,6 @@
 *
+!/C
+!/Cpp
 !*.cc
 !*.c
 !makefile

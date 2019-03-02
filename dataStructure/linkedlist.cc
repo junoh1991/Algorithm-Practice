@@ -26,6 +26,7 @@ void appendNode(Node *&head, int data){
 			current = current->next;
 	}
 
+
 	current->next = newNode;
 }
 
