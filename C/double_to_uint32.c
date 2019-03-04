@@ -2,44 +2,34 @@
 #include <stdint.h>
 
 
-uint32_t getUint1(double input){
+void getUint1(double input, uint32_t* arr){
     uint32_t* p;
 
     p = (uint32_t*) &input;
-    return *p;
-}
-
-uint32_t getUint2(double input){
-    uint32_t* p;
-
-    p = (uint32_t*) &input;
-    p++;
-    return *p;
+    arr[0] = *p;
+    arr[1] = *(p+1);
 }
 
 double getDouble(uint32_t r1, uint32_t r2){
     uint32_t* p;
-    double* val;
 
-    p = (double*) &r1;
+    p =  &r1;
     p++;
-    p = (double*) &r2;
+    p =  &r2;
     p--;
 
-    val = (double*) p;
-    return *val;
+    return *(double*) (p);
 }
 
 
 int main(){
 
-    double input = 12345.18;
+    double input = 12345.67;
 
-    uint32_t r1 = getUint1(input);
-    uint32_t r2 = getUint2(input);
+    uint32_t arr[2];
 
-    double ans = getDouble(r1, r2);
+    getUint1(input, arr);
+
+    double ans = getDouble(arr[0], arr[1]);
     printf("%.2f\n", ans);
-
-    
 }
