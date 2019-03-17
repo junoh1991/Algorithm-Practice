@@ -7,6 +7,7 @@
 */
 #include <iostream>
 #include <vector>
+#include <climits>
 
 using namespace std;
 
@@ -67,7 +68,7 @@ Node* build123(){
 }
 
 int size(Node* node){
-	if (node == NULL)
+	if(node == NULL)
 		return 0;
 
 	return 1 + size(node->left) + size(node->right);
@@ -81,8 +82,27 @@ int maxDepth(Node* node){
 }
 
 
+int minVal(Node* node){
+	int res = -1;
+	while(node != NULL){
+		res = node->data;
+		node = node->left;
+	}
+	return res;
+}
+
+int maxVal(Node* node){
+	int res = -1;
+	while(node != NULL){
+		res = node->data;
+		node = node->right;
+	}
+	return res;
+}
+
+
 void printTree(Node* node){
-	if (node == NULL)
+	if(node == NULL)
 		return;
 	printTree(node->left);
 	printf("%d ", node->data);
@@ -90,7 +110,7 @@ void printTree(Node* node){
 }
 
 void printPostorder(Node* node){
-	if (node == NULL)
+	if(node == NULL)
 		return;
 	printTree(node->left);
 	printTree(node->right);
@@ -98,7 +118,7 @@ void printPostorder(Node* node){
 }
 
 bool hasPathSum(Node* node, int sum){
-	if (node == NULL)
+	if(node == NULL)
 		return false;
 	if(node->left == NULL && node->right == NULL)
 		return (node->data== sum);
@@ -107,7 +127,7 @@ bool hasPathSum(Node* node, int sum){
 }
 
 void printPathsHelper(Node* node, vector<int> paths){
-	if (node == NULL)
+	if(node == NULL)
 		return;
 
 	if(node->left == NULL && node->right == NULL){
@@ -127,7 +147,7 @@ void printPaths(Node* node){
 }
 
 void mirror(Node* node){
-	if (node == NULL)
+	if(node == NULL)
 		return;
 	mirror(node->left);
 	mirror(node->right);
@@ -135,7 +155,37 @@ void mirror(Node* node){
 }
 
 void doubleTree(Node* node){
+	if(node == NULL)
+		return;
+	doubleTree(node->left);
+	doubleTree(node->right);
 
+	Node* clone = newNode(node->data);
+	clone->left = node->left;
+	node->left = clone;
+}
+
+int sameTree(Node* a, Node* b){
+	if (a == NULL && b == NULL)
+		return true;
+	if (a == NULL ^ b == NULL || a->data != b->data)
+		return false;
+
+	return sameTree(a->left, b->left) && sameTree(a->right, b->right);
+}
+
+int isBSTRecur(Node* node, int max, int min){
+	if (node == NULL)
+		return true;
+
+	if (node->data > max || node->data < min)
+		return false;
+
+	return isBSTRecur(node->left, node->data, min) && isBSTRecur(node->right, max, node->data);
+}
+
+int isBST(Node* node){
+	return isBSTRecur(node, INT_MAX, INT_MIN);
 }
 
 int main(){
@@ -148,10 +198,7 @@ int main(){
 	insert(head, 2);
 	insert(head, 1);
 
-	printTree(head);
-	cout << endl;
-	mirror(head);
-	printTree(head);
+	cout << isBST(head) << endl;
 
 }
 
