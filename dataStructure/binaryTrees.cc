@@ -2,8 +2,6 @@
 	Problem set from Standford CS Ed library 
 	BinaryTrees.pdf
 	Found at : http://cslibrary.stanford.edu/110/
-
-
 */
 #include <iostream>
 #include <vector>
