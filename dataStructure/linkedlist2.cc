@@ -54,6 +54,9 @@ void pushNode(Node*& head, Node* node){
 
 
 Node* buildLL(vector<int> input){
+	if (input.size() == 0)
+		return NULL;
+
 	Node* dummy = NULL;
 	for(int i = input.size()-1; i >= 0; i--)
 		pushData(dummy, input[i]);
@@ -130,6 +133,27 @@ void insertNth(Node*& head, int index, int data){
 }
 
 
+void frontBackSplit(Node *source, Node *&frontRef, Node *&backRef){	
+	frontRef = source;
+	backRef = source;
+	Node *fastPtr = source;
+	if (source == NULL){
+		frontRef = NULL;
+		backRef = NULL;
+		return;
+	}
+
+	while (fastPtr->next != NULL){
+		fastPtr = fastPtr->next;
+		if (fastPtr->next != NULL){
+			fastPtr = fastPtr->next;
+			backRef = backRef->next;
+		}
+	}
+	Node *temp = backRef;
+	backRef = backRef->next;
+	temp->next = NULL;
+}
 
 void moveNode(Node*& dest, Node*& source){
 	if(source == NULL)
@@ -376,7 +400,7 @@ void sortedMergeTest(){
 
 	vector<int> a_arr4{1,4,6,7,8};
 	vector<int> b_arr4{1,2,3};
-	vector<int> answer4{1,1,2,3,4,5,6,7,8};
+	vector<int> answer4{1,1,2,3,4,6,7,8};
 	a_arrs.push_back(a_arr4);
 	b_arrs.push_back(b_arr4);
 	answers.push_back(answer4);
@@ -412,10 +436,15 @@ void sortedMergeTest(){
 }
 
 
-void mergeSort(Node* head){
-	Node* front;
-	Node* back;
-
+void mergeSort(Node*& head){
+	if(head == NULL || head->next == NULL)
+		return;
+	Node* front = NULL;
+	Node* back = NULL;
+	frontBackSplit(head, front, back);
+	mergeSort(front);
+	mergeSort(back);
+	head = sortedMerge(front, back);
 }
 
 bool mergeSortTestHelper(vector<int> a_arr, vector<int> answer){
